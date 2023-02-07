@@ -113,7 +113,7 @@ public class PropertyTaxPyt {
 
 	@Override
 	public String toString() {
-		return "PropertyTaxPyt [propertyId=" + propertyId + ", ownersName=" + ownersName + ", areaInSqFt=" + areaInSqFt
+		return "[propertyId=" + propertyId + ", ownersName=" + ownersName + ", areaInSqFt=" + areaInSqFt
 				+ ", propertyType=" + propertyType + ", taxAmount=" + taxAmount + ", dateOfPyt=" + dateOfPyt
 				+ ", dueDate=" + dueDate + ", revisedTaxAmt=" + revisedTaxAmt + "]";
 	}	

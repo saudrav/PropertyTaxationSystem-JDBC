@@ -2,6 +2,7 @@ package com.cts.propts.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,30 +13,38 @@ import java.util.Date;
 import java.util.List;
 
 import com.cts.propts.exception.PropertyTaxPytException;
-import com.cts.propts.model.PropertyTaxPyt;
 
 public class ApplicationUtil {
 
-	public static List<String> readFile(String propTaxPytFile) throws PropertyTaxPytException, IOException {
+	public static List<String> readFile(String propTaxPytFile) throws PropertyTaxPytException {
 
 		List<String> propTaxPytList = new ArrayList<String>();
 
 		// TYPE YOUR CODE HERE
-		FileReader fr = new FileReader(propTaxPytFile);
-		BufferedReader br = new BufferedReader(fr);
-		String line = "";
-		Date dateOfPyt = null, dueDate = null;
+		FileReader fr;
+		try {
+			fr = new FileReader(propTaxPytFile);
+			BufferedReader br = new BufferedReader(fr);
+			String line = "";
+			Date dateOfPyt = null, dueDate = null;
 
-		while ((line = br.readLine()) != null) {
-			String[] arr = line.split(",");			
-			dateOfPyt = stringToDateConverter(arr[5]);
-			dueDate = stringToDateConverter(arr[6]);
-			
-			if (checkIfDateOfPytIsLessThanDueDate(dateOfPyt, dueDate)) {
-				propTaxPytList.add(line);				
+			while ((line = br.readLine()) != null) {
+				String[] arr = line.split(",");
+				dateOfPyt = stringToDateConverter(arr[5]);
+				dueDate = stringToDateConverter(arr[6]);
+
+				if (checkIfDateOfPytIsLessThanDueDate(dateOfPyt, dueDate)) {
+					propTaxPytList.add(line);
+				}
 			}
+			br.close();
+
+		} catch (FileNotFoundException e) {
+			System.out.println("readFile() : FileNotFoundException -> " + e.getMessage());
+		} catch (IOException e) {
+			System.out.println("readFile() : IOException -> " + e.getMessage());
 		}
-		br.close();
+
 		return propTaxPytList;
 	}
 
@@ -47,12 +56,11 @@ public class ApplicationUtil {
 
 		return sqlDate;
 	}
-	
 
 	public static java.util.Date stringToDateConverter(String stringDate) {
-		
+
 		java.util.Date utDate = null;
-		// TYPE YOUR CODE HERE		
+		// TYPE YOUR CODE HERE
 		try {
 			utDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
 		} catch (ParseException e) {
@@ -60,15 +68,14 @@ public class ApplicationUtil {
 		}
 		return utDate;
 	}
-	
 
 	public static boolean checkIfDateOfPytIsLessThanDueDate(Date dateOfPyt, Date dueDate) {
 
 		// TYPE YOUR CODE HERE
 
-		long difference_In_Time	= dueDate.getTime() - dateOfPyt.getTime();
-		//System.out.println(difference_In_Time);
-		if(difference_In_Time > 0) {
+		long difference_In_Time = dueDate.getTime() - dateOfPyt.getTime();
+		// System.out.println(difference_In_Time);
+		if (difference_In_Time > 0) {
 			return true;
 		}
 		return false;

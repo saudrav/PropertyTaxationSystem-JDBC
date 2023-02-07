@@ -25,16 +25,14 @@ public class DBConnectionManager {
 			fis = new FileInputStream("database.properties");
 			props.load(fis);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("DBConnectionManager() : IOException -> " + e.getMessage());
 		}		
 
 		// load the Driver Class
 		try {
 			Class.forName(props.getProperty("drivername"));
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("DBConnectionManager() : ClassNotFoundException -> " + e.getMessage());
 		}
 		
 	}
@@ -54,8 +52,7 @@ public class DBConnectionManager {
 			try {
 				con = DriverManager.getConnection(props.getProperty("url"),props.getProperty("username"),props.getProperty("password"));
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.out.println("getConnection() : SQLException -> " + e.getMessage());
 			}
 			return con;
 	}

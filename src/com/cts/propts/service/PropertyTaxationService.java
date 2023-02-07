@@ -40,7 +40,7 @@ public class PropertyTaxationService {
 			propertyTaxPyt.setDueDate(ApplicationUtil.stringToDateConverter(arr[6]));
 
 			double revisedTaxAmt = calculateTaxDiscount(propertyTaxPyt.getPropertyType(),
-					propertyTaxPyt.getAreaInSqFt(), propertyTaxPyt.getTaxAmount());
+											propertyTaxPyt.getAreaInSqFt(), propertyTaxPyt.getTaxAmount());
 
 			propertyTaxPyt.setRevisedTaxAmt(revisedTaxAmt);
 
@@ -50,7 +50,7 @@ public class PropertyTaxationService {
 	}
 	
 
-	public boolean addPropTaxDetails(String inputFeed) throws PropertyTaxPytException, IOException, ParseException {
+	public boolean addPropTaxDetails(String inputFeed) throws PropertyTaxPytException {
 
 		// TYPE YOUR CODE HERE
 		List<String> propTaxEarlyPytList = new ArrayList<String>();
@@ -73,8 +73,6 @@ public class PropertyTaxationService {
 		
 		propTaxPytList.stream()
 						.forEach(System.out::println);
-		
-		//System.out.println(propTaxPytList);
 		
 	}
 	

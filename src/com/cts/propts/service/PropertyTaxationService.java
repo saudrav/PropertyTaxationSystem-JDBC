@@ -12,7 +12,7 @@ import com.cts.propts.model.PropertyTaxPyt;
 import com.cts.propts.util.ApplicationUtil;
 
 public class PropertyTaxationService {
-	
+
 	PropertyTaxDAO propertyTaxDAO = new PropertyTaxDAO();
 
 	/*
@@ -40,7 +40,7 @@ public class PropertyTaxationService {
 			propertyTaxPyt.setDueDate(ApplicationUtil.stringToDateConverter(arr[6]));
 
 			double revisedTaxAmt = calculateTaxDiscount(propertyTaxPyt.getPropertyType(),
-											propertyTaxPyt.getAreaInSqFt(), propertyTaxPyt.getTaxAmount());
+					propertyTaxPyt.getAreaInSqFt(), propertyTaxPyt.getTaxAmount());
 
 			propertyTaxPyt.setRevisedTaxAmt(revisedTaxAmt);
 
@@ -48,7 +48,6 @@ public class PropertyTaxationService {
 		}
 		return propTaxPytList;
 	}
-	
 
 	public boolean addPropTaxDetails(String inputFeed) throws PropertyTaxPytException {
 
@@ -60,48 +59,43 @@ public class PropertyTaxationService {
 		ArrayList<PropertyTaxPyt> propTaxPytList = new ArrayList<>();
 
 		propTaxPytList = buildPropertyTaxList(propTaxEarlyPytList);
-		
+
 		return propertyTaxDAO.insertPropertyTaxPyt(propTaxPytList);
-	}	
-	
+	}
 
 	public void getPropertyTaxPyt() {
 
 		ArrayList<PropertyTaxPyt> propTaxPytList = new ArrayList<>();
 
 		propTaxPytList = propertyTaxDAO.getPropertyTaxPyt();
-		
-		propTaxPytList.stream()
-						.forEach(System.out::println);
-		
+
+		System.out.println();
+		System.out.println("propertyId\t ownersName\t areaInSqFt\t propertyType\t\t taxAmount\t dateOfPyt\t\t dueDate\t revisedTaxAmt");
+
+		propTaxPytList.stream().forEach(System.out::println);
+
 	}
-	
 
 	public static double calculateTaxDiscount(String propertyType, double areaInSqFt, double currentTaxAmt) {
-		
+
 		double revisedTaxAmt = 0.0;
 
 		// TYPE YOUR CODE HERE
-		if(propertyType.equalsIgnoreCase("Commercial")) {
-			if(areaInSqFt <= 1000) {
+		if (propertyType.equalsIgnoreCase("Commercial")) {
+			if (areaInSqFt <= 1000) {
 				revisedTaxAmt = currentTaxAmt * 0.93;
+			} else if (areaInSqFt >= 1001 && areaInSqFt <= 10000) {
+				revisedTaxAmt = currentTaxAmt * 0.90;
+			} else {
+				revisedTaxAmt = currentTaxAmt * 0.83;
 			}
-			else if(areaInSqFt>=1001 && areaInSqFt<=10000) {
-				revisedTaxAmt = currentTaxAmt * 0.90;				
-			}
-			else {
-				revisedTaxAmt = currentTaxAmt * 0.83;				
-			}
-		}
-		else {
-			if(areaInSqFt <= 1000) {
+		} else {
+			if (areaInSqFt <= 1000) {
 				revisedTaxAmt = currentTaxAmt * 0.95;
-			}
-			else if(areaInSqFt>=1001 && areaInSqFt<=10000) {
-				revisedTaxAmt = currentTaxAmt * 0.91;				
-			}
-			else {
-				revisedTaxAmt = currentTaxAmt * 0.89;				
+			} else if (areaInSqFt >= 1001 && areaInSqFt <= 10000) {
+				revisedTaxAmt = currentTaxAmt * 0.91;
+			} else {
+				revisedTaxAmt = currentTaxAmt * 0.89;
 			}
 		}
 		return revisedTaxAmt;
